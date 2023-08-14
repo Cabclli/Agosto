@@ -14,23 +14,30 @@ def register():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
+        email = request.form["email"]
         db = get_db()
         error = None
 
         if not username:
-            error = 'Username is required.'
+            error = 'usuario incorrecto.'
+        elif "@" in username:
+            error = 'el usuario no puede tener arroba'
         elif not password:
-            error = 'Password is required.'
+            error = 'contraseña  incorrecta.'
+        elif not email:
+            error = "email incorrecto"
+        elif "@" not in email:
+            error = "el email debe tener arroba"
 
         if error is None:
             try:
                 db.execute(
-                    "INSERT INTO user (username, password) VALUES (?, ?)",
-                    (username, generate_password_hash(password)),
+                    "INSERT INTO user (username, email, password) VALUES (?, ?, ?)",
+                    (username,email,generate_password_hash(password)),
                 )
                 db.commit()
-            except db.IntegrityError:
-                error = f"User {username} is already registered."
+            except db.IntegrityError():
+                error = f"usuario {username} o correo {email} ya esta en uso."
             else:
                 return redirect(url_for("auth.login"))
 
@@ -46,7 +53,7 @@ def login():
         db = get_db()
         error = None
         user = db.execute(
-            'SELECT * FROM user WHERE username = ?', (username,)
+            'SELECT * FROM user WHERE email = ? OR username = ?', (username,username)
         ).fetchone()
 
         if user is None:

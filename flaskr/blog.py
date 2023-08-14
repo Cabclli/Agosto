@@ -55,14 +55,14 @@ def get_post(id, check_author=True):
         abort(404, f"Post id {id} doesn't exist.")
 
     if check_author and post['author_id'] != g.user['id']:
-        abort(403)
+        abort(403) #esto pregunta
 
     return post
 
 @bp.route('/<int:id>/update', methods=('GET', 'POST'))
 @login_required
 def update(id):
-    post = get_post(id)
+    post = get_post(id, check_author=False) #(check_author=False)esto hace que el segundo if  no funcione del (def get post)
 
     if request.method == 'POST':
         title = request.form['title']
@@ -89,7 +89,7 @@ def update(id):
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required
 def delete(id):
-    get_post(id)
+    get_post(id,check_author=False)
     db = get_db()
     db.execute('DELETE FROM post WHERE id = ?', (id,))
     db.commit()
