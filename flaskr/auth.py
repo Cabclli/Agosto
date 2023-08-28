@@ -15,7 +15,6 @@ def register():
         username = request.form['username']
         password = request.form['password']
         password2 = request.form['password2']
-
         email = request.form["email"]
         db = get_db()
         error = None
@@ -89,6 +88,7 @@ def load_logged_in_user():
         g.user = get_db().execute(
             'SELECT * FROM user WHERE id = ?', (user_id,)
         ).fetchone()
+        
 
 @bp.route('/logout')
 def logout():
