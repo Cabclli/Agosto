@@ -104,3 +104,31 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view
+
+
+@bp.route('/configu', methods=('GET', 'POST'))
+@login_required
+def configu():
+       
+    
+    if request.method == 'POST':
+        email = request.form['email']
+        error = None
+
+        if not email:
+            error = 'error email'
+        if "@" not in email:
+            error = 'error email: falta la arroba'
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'UPDATE user SET email = ? WHERE id = ?' ,
+                (email, g.user['id'])
+            )
+            db.commit()
+            return redirect(url_for('blog.index'))
+
+    return render_template('confi/configu.html')
