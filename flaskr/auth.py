@@ -44,7 +44,7 @@ def register():
                     (username,email,generate_password_hash(password)),
                 )
                 db.commit()
-            except db.IntegrityError():
+            except db.IntegrityError:
                 error = f"usuario {username} o correo {email} ya esta en uso."
             else:
                 return redirect(url_for("auth.login"))
@@ -125,7 +125,7 @@ def configu():
         else:
             db = get_db()
             db.execute(
-                'UPDATE user SET email = ? WHERE id = ?' ,
+                'UPDATE id SET email = ? WHERE id = ?' ,
                 (email, g.user['id'])
             )
             db.commit()

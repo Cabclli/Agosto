@@ -5,13 +5,13 @@
   <h1>TEST</h1>
   <ul>
     {% if g.user %}
-    <li><a class="botones" href=""><span>{{ g.user['username'] }}</span></a>
-    <li><a  class="botones" href=""><span>{{ g.user['email'] }}</span></a>
-    <li><a class="botones" href="{{ url_for('auth.configu') }}">Configuracion</a>
-    <li><a  class="botones" href="{{ url_for('auth.logout') }}">Cerrar sesion</a>
+    <li><span >{{ g.user['username'] }} </span>
+    <li><span >{{ g.user['email'] }}</span>
+    <li><a class="" href="{{ url_for('auth.configu') }}">Configuracion</a>
+    <li><a  class="" href="{{ url_for('auth.logout') }}">Cerrar sesion</a>
     {% else %}
-      <li><a class="botones" href="{{ url_for('auth.register') }}">Registrar</a>
-      <li><a class="botones" href="{{ url_for('auth.login') }}">iniciar sesion</a>
+      <li><a class="" href="{{ url_for('auth.register') }}">Registrar</a>
+      <li><a class="" href="{{ url_for('auth.login') }}">iniciar sesion</a>
       
 
     {% endif %}
